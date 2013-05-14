@@ -430,7 +430,7 @@ class Soledad(object):
             return True
         except DecryptionFailed:
             logger.error('Could not decrypt storage secret.')
-        except IOError, e: 
+        except Exception, e:
             logger.error('IOError: %s' % str(e))
         return False
 
