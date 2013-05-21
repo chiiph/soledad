@@ -1,0 +1,2 @@
+  o Access sqlcipher through a thread-safe wrapper that proxies all method access to
+    a single thread where the sqlite api is instantiated.

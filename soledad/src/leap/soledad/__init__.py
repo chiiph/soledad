@@ -27,7 +27,6 @@ remote storage in the server side.
 """
 
 import os
-import string
 import binascii
 import logging
 import urlparse
@@ -38,15 +37,10 @@ import socket
 import ssl
 import errno
 
-
 from xdg import BaseDirectory
 from hashlib import sha256
 from u1db.remote import http_client
-from u1db.remote.ssl_match_hostname import (  # noqa
-    CertificateError,
-    match_hostname,
-)
-
+from u1db.remote.ssl_match_hostname import match_hostname
 
 #
 # Assert functions
@@ -140,6 +134,8 @@ from leap.soledad.sqlcipher import (
     SQLCipherDatabase,
 )
 from leap.soledad.target import SoledadSyncTarget
+from leap.soledad.dbwrapper import SQLCipherWrapper
+
 from leap.soledad.shared_db import SoledadSharedDatabase
 from leap.soledad.crypto import SoledadCrypto
 
@@ -439,7 +435,8 @@ class Soledad(object):
             secret[salt_start:salt_end],  # the salt
             buflen=32,  # we need a key with 256 bits (32 bytes)
         )
-        self._db = sqlcipher_open(
+        # Instantiate a thread-safe wrapper
+        self._db = SQLCipherWrapper(
             self._local_db_path,
             binascii.b2a_hex(key),  # sqlcipher only accepts the hex version
             create=True,
