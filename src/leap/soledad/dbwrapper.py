@@ -102,6 +102,7 @@ class SQLCipherWrapper(threading.Thread):
                     logger.error(
                         "Error on proxied method %s: '%s'." % (
                         attr, e.args[0]))
+                    raise
             else:
                 # non-callable attribute
                 res = attr
@@ -114,7 +115,7 @@ class SQLCipherWrapper(threading.Thread):
 
     def close(self):
         """
-        Closes the sqlcipher database and finished the thread
+        Closes the sqlcipher database and finishes the thread
         """
         self._db.close()
         self.__end_thread()
