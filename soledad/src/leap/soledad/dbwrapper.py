@@ -24,7 +24,7 @@ import time
 
 from functools import partial
 
-from leap.soledad.backends import sqlcipher
+from leap.soledad import sqlcipher
 
 logger = logging.getLogger(__name__)
 
@@ -101,7 +101,7 @@ class SQLCipherWrapper(threading.Thread):
                 except Exception as e:
                     logger.error(
                         "Error on proxied method %s: '%s'." % (
-                        attr, e.args[0]))
+                        attr, e))
                     raise
             else:
                 # non-callable attribute
